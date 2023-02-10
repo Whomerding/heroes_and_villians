@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import SupersSerializer
 from .models import Super
+from super_types import serializers
+from super_types import models
 
 
 @api_view(['GET', 'POST'])
@@ -13,10 +15,20 @@ def supers_list(request):
         super_type = request.query_params.get('type')
         queryset = Super.objects.all ()
         if super_type:
-            queryset = queryset.filter(super_type__type=super_type)
-            
-        serializer = SupersSerializer(queryset, many = True)
-        return Response(serializer.data)
+            queryset = queryset.filter(super_type__type=super_type)    
+            serializer = SupersSerializer(queryset, many = True)
+            return Response(serializer.data)
+        else:
+            heroes = Super.objects.filter(super_type = 1)
+            villains = Super.objects.filter(super_type = 2)
+            heroes_serializer = SupersSerializer (heroes, many = True)
+            villains_serializer = SupersSerializer (villains, many = True)
+            custom_response_dict = {
+                'Heroes': heroes_serializer.data,  
+                'Villains': villains_serializer.data
+            }
+            return Response(custom_response_dict)
+
     elif request.method == 'POST':
         serializer = SupersSerializer(data=request.data)
         serializer.is_valid (raise_exception=True)
