@@ -4,8 +4,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import SupersSerializer
 from .models import Super
-from super_types import serializers
-from super_types import models
 
 
 @api_view(['GET', 'POST'])
