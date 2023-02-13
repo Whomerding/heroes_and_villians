@@ -3,7 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import SupersSerializer
-from .models import Super
+from .models import Super, SuperType
+
 
 
 @api_view(['GET', 'POST'])
